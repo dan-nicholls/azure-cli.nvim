@@ -19,7 +19,7 @@ Use `lazy.nvim` for lazy loading of this plugin in your Neovim configuration.
 Add the following line to your Neovim configuration file:
 
 ```
-require('lazy_nvim').plugin 'username/neovim-azure-cli'
+require('lazy_nvim').plugin 'dannicholls/neovim-azure-cli'
 ```
 
 Then, reload your Neovim configuration.
