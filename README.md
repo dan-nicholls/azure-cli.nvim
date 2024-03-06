@@ -40,3 +40,8 @@ Contributions are welcome! Please read the
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+## References
+
+- [WIQL Query Syntax](https://learn.microsoft.com/en-us/azure/devops/boards/queries/wiql-syntax?view=azure-devops)
+- [Azure CLI Reference](https://learn.microsoft.com/en-us/cli/azure/boards?view=azure-cli-latest)
