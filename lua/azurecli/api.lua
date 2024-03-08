@@ -1,52 +1,52 @@
 local Api = {}
 
 local function execute_command(command)
-	local handle = io.popen(command)
-	local result = handle:read("*a")
+	local handle = assert(io.popen(command, "r"))
+	local result = assert(handle:read("*a"))
 	handle:close()
-	return result
+	return vim.json.decode(result)
 end
 
 function Api.get_all_items()
 	local command =
-		"az boards query --wiql \"SELECT [System.Id], [System.Title], [System.State] FROM WorkItems WHERE [System.WorkItemType] IN ('Task', 'User Story', 'Bug', 'Defect', 'Defect')\" -o table"
+		"az boards query --wiql \"SELECT [System.Id], [System.Title], [System.State], [System.WorkItemType] FROM WorkItems WHERE [System.WorkItemType] IN ('Task', 'User Story', 'Bug', 'Defect')\""
 	result = execute_command(command)
-	print(result)
+	return result
 end
 
 function Api.get_tasks()
 	local command =
-		"az boards query --wiql \"SELECT [System.Id], [System.Title], [System.State] FROM WorkItems WHERE [System.WorkItemType] = 'Task'\" -o table"
+		"az boards query --wiql \"SELECT [System.Id], [System.Title], [System.State], [System.WorkItemType] FROM WorkItems WHERE [System.WorkItemType] = 'Task'\""
 	result = execute_command(command)
-	print(result)
+	return result
 end
 
 function Api.get_user_stories()
 	local command =
-		"az boards query --wiql \"SELECT [System.Id], [System.Title], [System.State] FROM WorkItems WHERE [System.WorkItemType] = 'User Story'\" -o table"
+		"az boards query --wiql \"SELECT [System.Id], [System.Title], [System.State], [System.WorkItemType] FROM WorkItems WHERE [System.WorkItemType] = 'User Story'\""
 	result = execute_command(command)
-	print(result)
+	return result
 end
 
 function Api.get_bugs()
 	local command =
-		"az boards query --wiql \"SELECT [System.Id], [System.Title], [System.State] FROM WorkItems WHERE [System.WorkItemType] = 'Bug'\" -o table"
+		"az boards query --wiql \"SELECT [System.Id], [System.Title], [System.State], [System.WorkItemType] FROM WorkItems WHERE [System.WorkItemType] = 'Bug'\""
 	result = execute_command(command)
-	print(result)
+	return result
 end
 
 function Api.get_defects()
 	local command =
-		"az boards query --wiql \"SELECT [System.Id], [System.Title], [System.State] FROM WorkItems WHERE [System.WorkItemType] = 'Defect'\" -o table"
+		"az boards query --wiql \"SELECT [System.Id], [System.Title], [System.State], [System.WorkItemType] FROM WorkItems WHERE [System.WorkItemType] = 'Defect'\""
 	result = execute_command(command)
-	print(result)
+	return result
 end
 
 function Api.get_issues()
 	local command =
-		"az boards query --wiql \"SELECT [System.Id], [System.Title], [System.State] FROM WorkItems WHERE [System.WorkItemType] = 'Issue'\" -o table"
+		"az boards query --wiql \"SELECT [System.Id], [System.Title], [System.State], [System.WorkItemType] FROM WorkItems WHERE [System.WorkItemType] = 'Issue'\""
 	result = execute_command(command)
-	print(result)
+	return result
 end
 
 return Api
