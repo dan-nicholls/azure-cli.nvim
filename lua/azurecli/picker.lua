@@ -5,6 +5,7 @@ local sorters = require("telescope.sorters")
 local action_state = require("telescope.actions.state")
 
 local Config = require("azurecli.config")
+local Window = require("azurecli.window")
 
 local M = {}
 
@@ -46,7 +47,7 @@ function M.use_picker(data)
 					actions.close(prompt_bufnr)
 					if selection then
 						-- Do stuff here
-						print(selection.value)
+						Window.open_window(selection.value)
 					end
 				end)
 				return true
