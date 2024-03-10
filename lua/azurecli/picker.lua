@@ -7,6 +7,8 @@ local action_state = require("telescope.actions.state")
 local Config = require("azurecli.config")
 local Window = require("azurecli.window")
 
+local Api = require("azurecli.api")
+
 local M = {}
 
 local function entry_maker(entry)
@@ -34,8 +36,8 @@ function M.use_picker(data)
 
 	pickers
 		.new(opts, {
-			results_title = "Result Title",
-			prompt_title = "Prompt Title",
+			results_title = "Results",
+			prompt_title = "Search Work Items",
 			sorter = sorters.get_generic_fuzzy_sorter(),
 			finder = finders.new_table({
 				results = data,
@@ -47,7 +49,8 @@ function M.use_picker(data)
 					actions.close(prompt_bufnr)
 					if selection then
 						-- Do stuff here
-						Window.open_window(selection.value)
+						item_data = Api.get_work_item(selection.value["fields"]["System.Id"])
+						Window.open_window(item_data)
 					end
 				end)
 				return true

@@ -49,4 +49,10 @@ function Api.get_issues()
 	return result
 end
 
+function Api.get_work_item(id)
+	local command = "az boards work-item show --id " .. id
+	result = execute_command(command)
+	return result
+end
+
 return Api
