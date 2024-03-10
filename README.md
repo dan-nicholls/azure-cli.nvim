@@ -16,13 +16,21 @@ Use `lazy.nvim` for lazy loading of this plugin in your Neovim configuration.
 
 ### [lazy.nvim](https://github.com/folke/lazy.nvim)
 
-Add the following line to your Neovim configuration file:
+Add the following line to your `lazy.nvim` configuration file:
 
-```
-require('lazy_nvim').plugin 'dannicholls/azure-cli.nvim'
+```lua
+{
+  "dannicholls/azure-cli.nvim",
+  lazy = false,
+  dependencies = {
+    "MunifTanjim/nui.nvim",
+    "nvim-lua/plenary.nvim",
+    "nvim-telescope/telescope.nvim",
+  },
+},
 ```
 
-Then, reload your Neovim configuration.
+Then, use the `Lazy reload` command to reload your Neovim configuration.
 
 ## Usage
 
@@ -30,7 +38,20 @@ TODO: Add usage instructions here.
 
 ## Configuration
 
-TODO: Add configuration options here.
+You can add these keybinding to your `whichkey` configuration:
+
+```lua
+M.AzureCli = {
+  n = {
+    ["<leader>aa"] = { ":AzureCli<CR>", opts = { nowait = true } },
+    ["<leader>ad"] = { ":AzureCliDefect<CR>", opts = { nowait = true } },
+    ["<leader>ab"] = { ":AzureCliBugs<CR>", opts = { nowait = true } },
+    ["<leader>as"] = { ":AzureCliUserStories<CR>", opts = { nowait = true } },
+    ["<leader>at"] = { ":AzureCliTasks<CR>", opts = { nowait = true } },
+    ["<leader>ai"] = { ":AzureCliIssues<CR>", opts = { nowait = true } },
+  },
+}
+```
 
 ## Contributing
 
