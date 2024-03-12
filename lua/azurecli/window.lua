@@ -1,6 +1,7 @@
 local Layout = require("nui.layout")
 local Popup = require("nui.popup")
 local Utils = require("azurecli.utils")
+local Config = require("azurecli.config")
 
 local Window = {}
 
@@ -41,6 +42,7 @@ function Window.open_window(work_item)
 		popup_id = createPopup("ID"),
 		popup_title = createPopup("Title"),
 		popup_state = createPopup("State"),
+		popup_type = createPopup("Type"),
 		popup_assigned_to = createPopup("Assigned To"),
 		popup_desc = createPopup("Description"),
 		popup_src = createPopup("Source"),
@@ -63,7 +65,10 @@ function Window.open_window(work_item)
 			}, { dir = "row", size = {
 				height = 3,
 			} }),
-			Layout.Box(popups["popup_assigned_to"], { size = { height = 3 } }),
+			Layout.Box({
+				Layout.Box(popups["popup_type"], { size = 20 }),
+				Layout.Box(popups["popup_assigned_to"], { grow = 5 }),
+			}, { size = { height = 3 } }),
 			Layout.Box(popups["popup_desc"], { grow = 1, enter = true, focusable = true }),
 			-- Layout.Box(popups["popup_src"], { grow = 1 }),
 		}, { dir = "col", size = "60%" })
@@ -78,12 +83,17 @@ function Window.open_window(work_item)
 	local id = tostring(work_item["fields"]["System.Id"])
 	local title = work_item["fields"]["System.Title"]
 	local state = work_item["fields"]["System.State"]
-	local assigned_to = work_item["fields"]["System.AssignedTo"]["displayName"]
+	local icon = Config.types.icons[work_item["fields"]["System.WorkItemType"]] or Config.types.icons["Default"]
+	local type = icon .. "\t" .. work_item["fields"]["System.WorkItemType"]
+	local assigned_to = (
+		work_item["fields"]["System.AssignedTo"] and work_item["fields"]["System.AssignedTo"]["displayName"]
+	) or "Not Assigned"
 	local desc = work_item["fields"]["System.Description"] or "-- empty --"
 
 	Utils.append_multiline_to_buffer(popups["popup_id"].bufnr, id)
 	Utils.append_multiline_to_buffer(popups["popup_title"].bufnr, title)
 	Utils.append_multiline_to_buffer(popups["popup_state"].bufnr, state)
+	Utils.append_multiline_to_buffer(popups["popup_type"].bufnr, type)
 	Utils.append_multiline_to_buffer(popups["popup_assigned_to"].bufnr, assigned_to)
 	Utils.append_markdown_to_buffer(popups["popup_desc"].bufnr, desc)
 	Utils.append_multiline_to_buffer(popups["popup_src"].bufnr, vim.inspect(work_item))
@@ -100,7 +110,10 @@ function Window.open_window(work_item)
 				}, { dir = "row", size = {
 					height = 3,
 				} }),
-				Layout.Box(popups["popup_assigned_to"], { size = { height = 3 } }),
+				Layout.Box({
+					Layout.Box(popups["popup_type"], { size = 20 }),
+					Layout.Box(popups["popup_assigned_to"], { grow = 5 }),
+				}, { size = { height = 3 } }),
 				Layout.Box(popups["popup_desc"], { grow = 1, enter = true, focusable = true }),
 			}, { dir = "col", size = "60%" }))
 			layout_state = "desc"
@@ -113,7 +126,10 @@ function Window.open_window(work_item)
 				}, { dir = "row", size = {
 					height = 3,
 				} }),
-				Layout.Box(popups["popup_assigned_to"], { size = { height = 3 } }),
+				Layout.Box({
+					Layout.Box(popups["popup_type"], { size = 20 }),
+					Layout.Box(popups["popup_assigned_to"], { grow = 5 }),
+				}, { size = { height = 3 } }),
 				Layout.Box(popups["popup_src"], { grow = 1, enter = true, focusable = true }),
 			}, { dir = "col", size = "60%" }))
 
