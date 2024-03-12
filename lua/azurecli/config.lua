@@ -6,6 +6,7 @@ M.types = {
 		["User Story"] = "",
 		["Bug"] = "",
 		["Defect"] = "",
+		["Issue"] = "󱍼",
 		["Default"] = "+",
 	},
 
