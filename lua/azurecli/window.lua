@@ -5,7 +5,7 @@ local Config = require("azurecli.config")
 
 local Window = {}
 
-local function createPopup(label, enter)
+local function createPopup(label, enter, readonly, modifiable)
 	return Popup({
 		border = {
 			style = "single",
@@ -13,14 +13,20 @@ local function createPopup(label, enter)
 				top = label,
 			},
 		},
-
 		enter = enter or false,
+		buf_options = {
+			readonly = readonly or false,
+			modifiable = modifiable or false,
+		},
 	})
 end
 
 local function setupEventHandlers(popup, layout)
 	popup:map("n", "<Esc>", function()
 		layout:unmount()
+	end, { noremap = true })
+	popup:map("n", "<Tab>", function()
+		return true
 	end, { noremap = true })
 
 	-- Handle Buff Leave Event
@@ -44,7 +50,7 @@ function Window.open_window(work_item)
 		popup_state = createPopup("State"),
 		popup_type = createPopup("Type"),
 		popup_assigned_to = createPopup("Assigned To"),
-		popup_desc = createPopup("Description"),
+		popup_desc = createPopup("Description", true, true, true),
 		popup_src = createPopup("Source"),
 	}
 
@@ -69,9 +75,9 @@ function Window.open_window(work_item)
 				Layout.Box(popups["popup_type"], { size = 20 }),
 				Layout.Box(popups["popup_assigned_to"], { grow = 5 }),
 			}, { size = { height = 3 } }),
-			Layout.Box(popups["popup_desc"], { grow = 1, enter = true, focusable = true }),
+			Layout.Box(popups["popup_desc"], { grow = 1 }),
 			-- Layout.Box(popups["popup_src"], { grow = 1 }),
-		}, { dir = "col", size = "60%" })
+		}, { dir = "col", size = "60%", enter = true })
 	)
 
 	layout:mount()
